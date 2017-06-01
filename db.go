@@ -19,6 +19,7 @@ package mongodb
 import (
 	"time"
 
+	"github.com/pkg/errors"
 	"gopkg.in/mgo.v2"
 )
 
@@ -42,7 +43,7 @@ func (db *DB) Connect(DbURI string) (err error) {
 	}
 	mongo.Timeout = ConnectTimeout
 	if mongoSession, err = mgo.DialWithInfo(mongo); err != nil {
-		return
+		return errors.Wrapf(err, "connecting to %v/%s", mongo.Addrs, mongo.Database)
 	}
 	mongoSession.SetMode(mgo.Monotonic, true)
 	mongoSession.SetSafe(&mgo.Safe{WMode: "majority"})
