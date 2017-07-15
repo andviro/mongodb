@@ -155,7 +155,6 @@ func (db *DB) Copy() *DB {
 func (db *DB) EnsureIndexes(allIndexes map[string][]mgo.Index) error {
 	for coll, idxs := range allIndexes {
 		for _, idx := range idxs {
-			idx.Background = true
 			if err := db.C(coll).EnsureIndex(idx); err != nil {
 				return errors.Wrap(err, "creating MongoDB index")
 			}
